@@ -1,0 +1,19 @@
+4 200
+4 300
+4 400
+4 500
+2 101 Mina 25
+2 102 Barbara 75
+2 200 Harry 45
+2 201 Ronald 47
+2 300 Yasmin 32
+2 301 Natalie 30
+2 302 Britney 51
+2 601 Cortney 33 201 102
+1 302
+4 102
+2 500 Maryam 30
+2 202 Sarah 24
+2 205 Sarah 5 101 301 500
+1 202
+3
