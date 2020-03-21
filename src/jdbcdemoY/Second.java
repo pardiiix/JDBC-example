@@ -2,6 +2,7 @@ package jdbcdemoY;
 import java.sql.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -163,6 +164,9 @@ public class Second {
     
     //Transaction 4
     public void nameofLikers(String line) throws SQLException{
+        //creating an arraylist to capture all the next generation of people who like the previous people
+    	ArrayList<Integer> nextLikesList = new ArrayList<Integer>(); 
+
 		StringTokenizer st = new StringTokenizer(line);
 		st.nextElement();
         int pid =  Integer.parseInt((String) st.nextElement());
@@ -171,9 +175,32 @@ public class Second {
     	try {         
     		ResultSet rs = stmt.executeQuery("select pid, name from Person where pid in(select mid from Likes where pid=" + pid + ");");
     		while (rs.next()) {
-    			  System.out.println("#4! Person "+pid+ " likes Person " + rs.getString(1) + "with the name of: " + rs.getString(2));
+    			  System.out.println("#4! Person "+pid+ " likes Person " + rs.getString(1) + " with the name of: " + rs.getString(2));
+    			  nextLikesList.add(Integer.parseInt((String)rs.getString(1)));
+//    			  int nextGenofLiking = Integer.parseInt((String)rs.getString(1));
+//    			  System.out.println(nextLikesList);
+//    			  ResultSet rs2 = stmt.executeQuery("select pid, name from Person where pid in(select mid from Likes where pid=" + nextGenofLiking + ");");
+//    			  while (rs2.next()) {
+//        			  System.out.println("And Person "+nextGenofLiking+ " likes Person " + rs2.getString(1) + " with the name of: " + rs2.getString(2));
+
+//    			  }
     			}
+    		//print all the people who have been liked by mid of the defined Person's pid
+    		if(nextLikesList.size()>0) {
+    			for(int i = 0; i < nextLikesList.size(); i++) {
+//    				System.out.println(nextLikesList.get(i));
+    				
+      			    ResultSet rs2 = stmt.executeQuery("select pid, name from Person where pid in(select mid from Likes where pid=" + nextLikesList.get(i) + ");");
+      			    while (rs2.next()) {
+          			    System.out.println("And Person "+nextLikesList.get(i)+ " likes Person " + rs2.getString(1) + " with the name of: " + rs2.getString(2));
+
+      			    }
+
+    			}
+    		}
     		
+			  
+
             
     	}
     	catch (SQLException s) {

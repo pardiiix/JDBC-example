@@ -5,7 +5,7 @@
 2 101 Mina 25
 2 102 Barbara 75 101
 2 200 Harry 45
-2 201 Ronald 47
+2 201 Ronald 47 200
 2 300 Yasmin 32
 2 301 Natalie 30
 2 302 Britney 51
