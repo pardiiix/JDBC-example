@@ -12,7 +12,7 @@ public class Second {
 	
 	public void initDatabase(){
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/homework4db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "admin", "admin");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/homework4db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "golabi");
 			stmt = conn.createStatement();
 			
 			//create Database
@@ -56,6 +56,9 @@ public class Second {
 				else if(command.equals("3")) {
 					avgAge(line);
 					
+				}
+				else if(command.equals("4")) {
+					nameofLikers(line);
 				}
 			}
 			
@@ -157,6 +160,26 @@ public class Second {
     	}
     }
     
+    
+    //Transaction 4
+    public void nameofLikers(String line) throws SQLException{
+		StringTokenizer st = new StringTokenizer(line);
+		st.nextElement();
+        int pid =  Integer.parseInt((String) st.nextElement());
+//        System.out.println(pid);
+        
+    	try {         
+    		ResultSet rs = stmt.executeQuery("select pid, name from Person where pid in(select mid from Likes where pid=" + pid + ");");
+    		while (rs.next()) {
+    			  System.out.println("#4! Person "+pid+ " likes Person " + rs.getString(1) + "with the name of: " + rs.getString(2));
+    			}
+    		
+            
+    	}
+    	catch (SQLException s) {
+    		System.out.println("#4: Error! Cannot retrieve names");
+    	}
+    }
 	public static void main(String[] args){
 		
 		Second db = new Second();
