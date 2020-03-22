@@ -203,7 +203,7 @@ public class Second {
     public void AvgAgeofLikers(String line) throws SQLException, NullPointerException{
         //creating an Queue to capture all edges of the graph (edges being pids of the people)
     	Queue<Integer> q = new LinkedList<>();
-    	Queue<Integer> ageQ = new LinkedList<>();
+    	ArrayList<Integer> ageQ = new ArrayList<>();
     	
 		StringTokenizer st = new StringTokenizer(line);
 		st.nextElement();
@@ -214,7 +214,7 @@ public class Second {
     	try {         
     		ResultSet rs = stmt.executeQuery("select pid, age from Person where pid in(select mid from Likes where pid=" + pid + ");");
     		while (rs.next()) {
-    			  System.out.println("#4! Person "+pid+ " likes Person " + rs.getString(1) + " with the age of: " + rs.getString(2));
+    			  System.out.println("#4: Person "+pid+ " likes Person " + rs.getString(1) + " with the age of: " + rs.getString(2));
     			  q.add(Integer.parseInt((String)rs.getString(2)));
     			  ageQ.add(Integer.parseInt((String)rs.getString(2)));
     			}
@@ -232,11 +232,19 @@ public class Second {
   			    ageQ.add(Integer.parseInt((String)rs2.getString(2)));
   			    
     			}
-    		System.out.println(ageQ);
-    		}           
+    		}
+//    		System.out.println(ageQ);
+    		int sum = 0;
+    		int average = 0;
+    		for (int i=0 ; i < ageQ.size(); i++) {
+    			sum += ageQ.get(i);
+    			average = sum / ageQ.size();
+    			
+    		}
+    		System.out.println("#5: The average age of people who like "+ pid+" is "+average);
     	}
     	catch (SQLException s) {
-    		System.out.println("#4: Error! Cannot retrieve names");
+    		System.out.println("#5: Error!");
     	}
     }
 
