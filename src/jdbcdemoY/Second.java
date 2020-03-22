@@ -63,6 +63,9 @@ public class Second {
 				else if(command.equals("4")) {
 					nameofLikers(line);
 				}
+				else if(command.equals("5")) {
+					AvgAgeofLikers(line);
+				}
 			}
 			
 		}
@@ -91,9 +94,11 @@ public class Second {
     		if (rowCount != 0) {
     			String firstQuery = "delete from Person where pid=" + pid;
     			stmt.executeUpdate(firstQuery);
+//    			System.out.println("#1: Person "+pid+" has been deleted from Person");
     			
     			String secondQuery = "delete from Likes where pid=" + pid;
     			stmt.executeUpdate(secondQuery);
+//    			System.out.println("#1: Person "+pid+" has been deleted from Likes");
     			
     			System.out.println("#1: Person "+pid+" has been deleted from both tables");
     		}
@@ -192,6 +197,49 @@ public class Second {
     		System.out.println("#4: Error! Cannot retrieve names");
     	}
     }
+    
+    
+    //Transaction 5
+    public void AvgAgeofLikers(String line) throws SQLException, NullPointerException{
+        //creating an Queue to capture all edges of the graph (edges being pids of the people)
+    	Queue<Integer> q = new LinkedList<>();
+    	Queue<Integer> ageQ = new LinkedList<>();
+    	
+		StringTokenizer st = new StringTokenizer(line);
+		st.nextElement();
+        int pid =  Integer.parseInt((String) st.nextElement());
+        q.add(pid);
+        
+        
+    	try {         
+    		ResultSet rs = stmt.executeQuery("select pid, age from Person where pid in(select mid from Likes where pid=" + pid + ");");
+    		while (rs.next()) {
+    			  System.out.println("#4! Person "+pid+ " likes Person " + rs.getString(1) + " with the age of: " + rs.getString(2));
+    			  q.add(Integer.parseInt((String)rs.getString(2)));
+    			  ageQ.add(Integer.parseInt((String)rs.getString(2)));
+    			}
+    		q.remove();
+
+    		//Breadth-first search
+    		while (q.isEmpty() == false) {
+    			int nextNode = q.peek();
+    			ResultSet rs2 = stmt.executeQuery("select pid, age from Person where pid in(select mid from Likes where pid=" + nextNode + ");");
+    			q.remove();
+    			
+    			while (rs2.next()) {
+  			    System.out.println("And Person "+ nextNode+ " likes Person " + rs2.getString(1) + " with the age of: " + rs2.getString(2));
+  			    q.add(Integer.parseInt((String)rs2.getString(2)));
+  			    ageQ.add(Integer.parseInt((String)rs2.getString(2)));
+  			    
+    			}
+    		System.out.println(ageQ);
+    		}           
+    	}
+    	catch (SQLException s) {
+    		System.out.println("#4: Error! Cannot retrieve names");
+    	}
+    }
+
 
     
     
