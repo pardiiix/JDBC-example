@@ -8,8 +8,8 @@
 2 201 Ronald 47 200
 2 300 Yasmin 32
 2 301 Natalie 30
-2 302 Britney 51
-2 601 Cortney 33 201 102
+2 302 Britney 51 300 301
+2 601 Cortney 33 201 102 302
 1 302
 4 102
 2 500 Maryam 30
