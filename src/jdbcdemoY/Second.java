@@ -274,14 +274,19 @@ public class Second {
     				"    FROM Likes\n" + 
     				"    GROUP BY pid\n" + 
     				"    HAVING COUNT(*)>1)");
-    		while (rs.next()) {
-    			  System.out.println("#6: The names of people who like more than one person are: " + (String)rs.getString(1));
+    		if (rs.next() == false) {
+			  System.out.println("#6: there is no person that likes two or more persons." );
 
-    			}
-//    		if (!rs.next()) {
-//    			  System.out.println("#6: there is no person that likes two or more persons." );
-//
-//    			}
+			} else {
+				do {
+	    			  System.out.println("#6: The names of people who like more than one person are: " + (String)rs.getString(1));
+				}while (rs.next());
+			}
+    		
+    		 
+
+    			
+
          
     	}
     	catch (SQLException s) {
