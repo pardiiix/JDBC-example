@@ -178,10 +178,14 @@ public class Second {
     		while (q.isEmpty() == false) {
     			int nextNode = q.peek();
     			ResultSet rs2 = stmt.executeQuery("select pid, name from Person where pid in(select mid from Likes where pid=" + nextNode + ");");
+//    			System.out.println(q);
     			q.remove();
+    			
     			while (rs2.next()) {
   			    System.out.println("And Person "+ nextNode+ " likes Person " + rs2.getString(1) + " with the name of: " + rs2.getString(2));
-			    }
+  			    q.add(Integer.parseInt((String)rs2.getString(1)));
+  			    
+    			}
     		}           
     	}
     	catch (SQLException s) {
