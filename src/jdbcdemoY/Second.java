@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-import java.util.LinkedList; 
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Queue; 
 
 public class Second {
@@ -65,6 +66,9 @@ public class Second {
 				}
 				else if(command.equals("5")) {
 					AvgAgeofLikers(line);
+				}
+				else if(command.equals("6")) {
+					LikesMoreThanOne(line);
 				}
 			}
 			
@@ -249,6 +253,41 @@ public class Second {
     }
 
 
+    //Transaction 6
+    public void LikesMoreThanOne(String line) throws SQLException{
+        //creating an Queue to capture all edges of the graph (edges being pids of the people)
+    	Queue<Integer> q = new LinkedList<>();
+    	
+		StringTokenizer st = new StringTokenizer(line);
+		st.nextElement();
+//		try {
+//			int pid =  Integer.parseInt((String) st.nextElement());
+//		}
+//		catch(NoSuchElementException e) {
+//			System.out.println();
+//		}
+
+        
+    	try {         
+    		ResultSet rs = stmt.executeQuery("select name from Person where pid in (SELECT\n" + 
+    				"    pid\n" + 
+    				"    FROM Likes\n" + 
+    				"    GROUP BY pid\n" + 
+    				"    HAVING COUNT(*)>1)");
+    		while (rs.next()) {
+    			  System.out.println("#6: The names of people who like more than one person are: " + (String)rs.getString(1));
+
+    			}
+//    		if (!rs.next()) {
+//    			  System.out.println("#6: there is no person that likes two or more persons." );
+//
+//    			}
+         
+    	}
+    	catch (SQLException s) {
+    		System.out.println("#6: Error!");
+    	}
+    }
     
     
     
